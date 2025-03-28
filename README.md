@@ -80,7 +80,6 @@ This generates a distributable web version.
 - Optimize pathfinding for larger grids with object pooling  
 - Implement diagonal movement support  
 - Introduce UI for error feedback and game status  
-- Check out the previous iteration: [prototype-01](https://github.com/link-to-prototype-01)  
 
 ## **7. License**  
 This project is licensed under the **MIT License**.  
