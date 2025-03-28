@@ -19,11 +19,10 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-        const isPlatform = false;
-        this.player = new Player(this, 100, 100);
+        this.player = new Player(this, 100, 300);
 
         this.movementSystem = new MovementSystem(this);
-        this.physicsSystem = new PhysicsSystem(isPlatform ? 400 : 0);
+        this.physicsSystem = new PhysicsSystem(400);
         this.collisionSystem = new CollisionSystem(
           this.add.rectangle(400, 450, 800, 20, 0x00ff00)
         ); 
