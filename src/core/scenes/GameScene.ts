@@ -1,14 +1,14 @@
 import { Player } from '../entities/Player';
 import { MovementSystem } from '../systems/MovementSystem';
 import { PhysicsSystem } from '../systems/PhysicsSystem';
-import { CollisionSystem } from '../systems/CollisionSystem';
+import { GroundCollisionSystem } from '../systems/GroundCollisionSystem';
 import Phaser from 'phaser';
 
 export class GameScene extends Phaser.Scene {
     player!: Player;
     movementSystem!: MovementSystem;
     physicsSystem!: PhysicsSystem;
-    collisionSystem!: CollisionSystem;
+    collisionSystem!: GroundCollisionSystem;
 
     constructor() {
         super('game-scene');
@@ -23,7 +23,7 @@ export class GameScene extends Phaser.Scene {
 
         this.movementSystem = new MovementSystem(this);
         this.physicsSystem = new PhysicsSystem(400);
-        this.collisionSystem = new CollisionSystem(
+        this.collisionSystem = new GroundCollisionSystem(
           this.add.rectangle(400, 450, 800, 20, 0x00ff00)
         ); 
     }

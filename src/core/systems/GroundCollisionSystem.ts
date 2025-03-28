@@ -2,7 +2,7 @@ import { Player } from '../entities/Player';
 import { PhysicsComponent } from '../components/PhysicsComponent';
 import Phaser from 'phaser';
 
-export class CollisionSystem {
+export class GroundCollisionSystem {
     ground: Phaser.GameObjects.Rectangle;
 
     constructor(ground: Phaser.GameObjects.Rectangle) {
