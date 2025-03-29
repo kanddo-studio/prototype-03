@@ -1,11 +1,21 @@
-import { PlayerEntity } from '../entities/Player';
-import { MovementSystem } from '../systems/MovementSystem';
 import Phaser from 'phaser';
 
-export class GameScene extends Phaser.Scene {
-    player!: PlayerEntity;
-    movementSystem!: MovementSystem;
+import { Entity } from 'kanji-ecs/core';
 
+import { MovementSystem } from 'kanji-ecs/systems';
+
+import { PositionComponent, VelocityComponent, InputComponent } from 'kanji-ecs/components';
+
+import { SpriteComponent } from '../components/SpriteComponent';
+import { RenderSystem } from '../systems/RenderSystem';
+import { InputSystem } from '../systems/InputSystem';
+
+
+export class GameScene extends Phaser.Scene {
+    player!: Entity;
+    movement!: MovementSystem;
+    render!: RenderSystem;
+    inputSystem!: InputSystem;
 
     constructor() {
         super('game-scene');
@@ -16,13 +26,24 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-        this.player = new PlayerEntity({ scene: this, x: 100, y: 300});
-        this.movementSystem = new MovementSystem({ scene: this });
+        const sprite = this.add.sprite(0, 0, 'player', 0);
+
+        this.player = new Entity();
+        this.player.add('velocity', new VelocityComponent(400));
+        this.player.add('position', new PositionComponent(300, 300));
+        this.player.add('input', new InputComponent());
+        this.player.add('sprite', new SpriteComponent(sprite));
+
+        this.movement = new MovementSystem();
+        this.render = new RenderSystem();
+        this.inputSystem = new InputSystem(this);
+        
     }
 
     update(_time: number, deltaTime: number) {
         const dt = deltaTime / 1000;
-
-        this.movementSystem.update({ player: this.player, deltaTime: dt });
+        this.movement.update([this.player], dt);
+        this.render.update([this.player]);
+        this.inputSystem.update([this.player]);
     }
 }
