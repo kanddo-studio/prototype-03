@@ -1,35 +1,42 @@
-import { Player } from '../entities/Player';
+import { PlayerEntity } from '../entities/Player';
 import { MovementComponent } from '../components/MovementComponent';
 import Phaser from 'phaser';
 
+interface IMovementSystemConstructor {
+    scene: Phaser.Scene,
+}
+interface IMovementSystemUpdate {
+    player: PlayerEntity, 
+    deltaTime: number
+}
 export class MovementSystem {
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
-    constructor(scene: Phaser.Scene) {
-        if (scene.input.keyboard) {
-            this.cursors = scene.input.keyboard.createCursorKeys();
+    constructor(props: IMovementSystemConstructor) {
+        if (props.scene.input.keyboard) {
+            this.cursors = props.scene.input.keyboard.createCursorKeys();
         } else {
             throw new Error("Keyboard input is not available in the scene.");
         }
     }
 
-    update(player: Player, deltaTime: number) {
-        const movementComponent = player.getComponent(MovementComponent) as MovementComponent;
+    update(props: IMovementSystemUpdate) {
+        const movementComponent = props.player.getComponent(MovementComponent) as MovementComponent;
 
         if (!movementComponent) return;
 
-        const speed = movementComponent.speed * deltaTime;
+        const speed = movementComponent.speed * props.deltaTime;
 
         if (this.cursors.left?.isDown) {
-            player.x -= speed;
+            props.player.x -= speed;
         } else if (this.cursors.right?.isDown) {
-            player.x += speed;
+            props.player.x += speed;
         }
 
         if (this.cursors.up?.isDown) {
-            player.y -= speed;
+            props.player.y -= speed;
         } else if (this.cursors.down?.isDown) {
-            player.y += speed;
+            props.player.y += speed;
         }
     }
 }

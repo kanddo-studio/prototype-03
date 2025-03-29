@@ -1,14 +1,11 @@
-import { Player } from '../entities/Player';
+import { PlayerEntity } from '../entities/Player';
 import { MovementSystem } from '../systems/MovementSystem';
-import { PhysicsSystem } from '../systems/PhysicsSystem';
-import { GroundCollisionSystem } from '../systems/GroundCollisionSystem';
 import Phaser from 'phaser';
 
 export class GameScene extends Phaser.Scene {
-    player!: Player;
+    player!: PlayerEntity;
     movementSystem!: MovementSystem;
-    physicsSystem!: PhysicsSystem;
-    collisionSystem!: GroundCollisionSystem;
+
 
     constructor() {
         super('game-scene');
@@ -19,20 +16,13 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-        this.player = new Player(this, 100, 300);
-
-        this.movementSystem = new MovementSystem(this);
-        this.physicsSystem = new PhysicsSystem(400);
-        this.collisionSystem = new GroundCollisionSystem(
-          this.add.rectangle(400, 450, 800, 20, 0x00ff00)
-        ); 
+        this.player = new PlayerEntity({ scene: this, x: 100, y: 300});
+        this.movementSystem = new MovementSystem({ scene: this });
     }
 
     update(_time: number, deltaTime: number) {
         const dt = deltaTime / 1000;
 
-        this.movementSystem.update(this.player, dt);
-        this.physicsSystem.update(this.player, dt);
-        this.collisionSystem.update(this.player);
+        this.movementSystem.update({ player: this.player, deltaTime: dt });
     }
 }

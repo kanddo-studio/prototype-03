@@ -1,17 +1,20 @@
 import { Component } from '../components/Component';
 import { MovementComponent } from '../components/MovementComponent';
-import { PhysicsComponent } from '../components/PhysicsComponent';
 
-export class Player extends Phaser.GameObjects.Sprite {
+interface IPlayerEntityConstructor {
+    scene: Phaser.Scene,
+    x: number, 
+    y: number
+}
+export class PlayerEntity extends Phaser.GameObjects.Sprite {
     components: Component[];
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, 'player');
-        scene.add.existing(this);
+    constructor(props: IPlayerEntityConstructor) {
+        super(props.scene, props.x, props.y, 'player');
+        props.scene.add.existing(this);
 
         this.components = [
             new MovementComponent(200),
-            new PhysicsComponent(0, 0)
         ];
     }
 
